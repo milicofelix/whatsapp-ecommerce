@@ -16,6 +16,11 @@ class Product extends Model
                             'active'
     ];
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *
