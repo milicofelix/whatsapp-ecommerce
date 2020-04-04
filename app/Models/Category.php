@@ -12,6 +12,11 @@ class Category extends Model
 
     protected $fillable = ['name','active'];
 
+    public function products()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *
