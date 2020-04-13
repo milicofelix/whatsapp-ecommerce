@@ -5,7 +5,7 @@ use App\Models\Product;
 use App\Models\ProductInput;
 use Illuminate\Database\Seeder;
 
-class ProductInputSeeder extends Seeder
+class ProductInputsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
