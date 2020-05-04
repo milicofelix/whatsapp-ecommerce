@@ -13,17 +13,24 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function (){
 
-    Route::resource('categories','CategoryController', ['except' => ['create','edit']]);
-    Route::resource('products','ProductController', ['except' => ['create','edit']]);
-    Route::resource('products.categories','ProductCategoryController', ['only' => ['index','store','destroy']]);
-    Route::resource('inputs','ProductInputController', ['only' => ['index','store','show']]);
-    Route::resource('outputs','ProductOutputController', ['only' => ['index','store','show']]);
+    Route::name('login')->post('login', 'AuthController@login');
+    Route::name('refresh')->post('refresh', 'AuthController@refresh');
+
+    Route::group(['middleware' => ['auth:api','jwt.refresh']], function (){
+        Route::name('logout')->post('logout', 'AuthController@logout');
+        Route::name('me')->get('me', 'AuthController@me');
+        Route::resource('categories','CategoryController', ['except' => ['create','edit']]);
+        Route::resource('products','ProductController', ['except' => ['create','edit']]);
+        Route::resource('products.categories','ProductCategoryController', ['only' => ['index','store','destroy']]);
+        Route::resource('inputs','ProductInputController', ['only' => ['index','store','show']]);
+        Route::resource('outputs','ProductOutputController', ['only' => ['index','store','show']]);
+    });
 });
 
 
