@@ -14,6 +14,8 @@ export class LoginComponent implements OnInit {
       'password': 'morango123'
   }
 
+  showMessageError:boolean = false;
+
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
@@ -21,10 +23,12 @@ export class LoginComponent implements OnInit {
   }
 
   submit(){
-    this.http.post('http://localhost:8000/api/login',this.credentials)
+    this.http.post<any>('http://localhost:8000/api/login',this.credentials)
         .subscribe((data) => {
+            const token = data.token;
+            window.localStorage.setItem('token',token);
           this.router.navigate(['categories/list'])
-        });
+        }, () => this.showMessageError = true);
     return false;
   }
 
