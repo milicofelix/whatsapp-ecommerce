@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {CategoryNewModalComponent} from "../category-new-modal/category-new-modal.component";
 import {CategoryEditModalComponent} from "../category-edit-modal/category-edit-modal.component";
+import {CategoryDeleteModalComponent} from "../category-delete-modal/category-delete-modal.component";
 
 @Component({
   selector: 'app-category-list',
@@ -17,6 +18,9 @@ export class CategoryListComponent implements OnInit {
 
     @ViewChild(CategoryEditModalComponent, {static: true})
     categoryEditModal: CategoryEditModalComponent;
+
+    @ViewChild(CategoryDeleteModalComponent, {static: true})
+    categoryDeleteModal: CategoryDeleteModalComponent;
 
     categoryID:number;
 
@@ -51,6 +55,11 @@ export class CategoryListComponent implements OnInit {
       this.categoryEditModal.showModal();
     }
 
+    showDeleteModal(categoryId:number){
+        this.categoryID = categoryId;
+        this.categoryDeleteModal.showModal();
+    }
+
     onInsertSuccess($event: any){
         console.log($event);
         this.getCategories();
@@ -66,6 +75,15 @@ export class CategoryListComponent implements OnInit {
     }
 
     onEditError($event: HttpErrorResponse){
+        console.log($event);
+    }
+
+    onDeleteSuccess($event: any){
+        console.log($event);
+        this.getCategories();
+    }
+
+    onDeleteError($event: HttpErrorResponse){
         console.log($event);
     }
 
