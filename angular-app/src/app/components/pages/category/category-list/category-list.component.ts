@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {ModalComponent} from "../../../bootstrap/modal/modal.component";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {CategoryNewModalComponent} from "../category-new-modal/category-new-modal.component";
+import {CategoryEditModalComponent} from "../category-edit-modal/category-edit-modal.component";
 
 @Component({
   selector: 'app-category-list',
@@ -11,30 +12,19 @@ export class CategoryListComponent implements OnInit {
 
   categories:Array<{id: number, name: string, active: boolean, created_at: {date: string}}> = [];
 
-  category = {
-      'name':''
-  }
-  @ViewChild(ModalComponent, {static: true})
-  modal: ModalComponent;
+  @ViewChild(CategoryNewModalComponent, {static: true})
+  categoryNewModal: CategoryNewModalComponent;
+
+    @ViewChild(CategoryEditModalComponent, {static: true})
+    categoryEditModal: CategoryEditModalComponent;
+
+    categoryID:number;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
     this.getCategories();
   }
-
-    submit(){
-        const token = window.localStorage.getItem('token');
-        this.http.post('http://localhost:8000/api/categories', this.category, {
-
-            headers:{
-                'Authorization':`Bearer ${token}`
-            }
-        })
-            .subscribe((category) => console.log(category));
-        this.modal.hide();
-        this.getCategories();
-    }
 
     getCategories(){
 
@@ -52,8 +42,31 @@ export class CategoryListComponent implements OnInit {
             });
     }
 
-    showModal(){
-      this.modal.show();
+    showInsertModal(){
+      this.categoryNewModal.showModal();
+    }
+
+    showEditModal(categoryId:number){
+      this.categoryID = categoryId;
+      this.categoryEditModal.showModal();
+    }
+
+    onInsertSuccess($event: any){
+        console.log($event);
+        this.getCategories();
+    }
+
+    onInsertError($event: HttpErrorResponse){
+      console.log($event);
+    }
+
+    onEditSuccess($event: any){
+        console.log($event);
+        this.getCategories();
+    }
+
+    onEditError($event: HttpErrorResponse){
+        console.log($event);
     }
 
 }
