@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../../../bootstrap/modal/modal.component";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {Category} from "../../../../models";
+import {CategoryHttpService} from "../../../../services/http/category-http.service";
 
 @Component({
   selector: 'category-edit-modal',
@@ -15,14 +17,14 @@ export class CategoryEditModalComponent implements OnInit {
   @Output() onSuccess: EventEmitter<any> = new EventEmitter<any>();
   @Output() onError: EventEmitter<HttpErrorResponse> = new EventEmitter<HttpErrorResponse>();
 
-  category = {
+  category: Category = {
       name: '',
       active: true
   }
 
   _categoryId:number;
 
-  constructor(private http: HttpClient) { }
+  constructor(public categoryHttp: CategoryHttpService, private http: HttpClient) { }
 
   ngOnInit() {
   }
@@ -31,34 +33,18 @@ export class CategoryEditModalComponent implements OnInit {
   set categoryId(value){
       this._categoryId = value;
       if(this._categoryId){
-        const token = window.localStorage.getItem('token');
-        this.http.get<{data:any}>(`http://localhost:8000/api/categories/${value}`,{
-
-            headers:{
-                'Authorization':`Bearer ${token}`
-            }
-        })
-            .subscribe(response => {
-                this.category = response.data
-            })
+          this.categoryHttp
+              .get(this._categoryId)
+              .subscribe(category => this.category = category);
     }
   }
 
     submit(){
-        const token = window.localStorage.getItem('token');
-        this.http.put(`http://localhost:8000/api/categories/${this._categoryId}`, this.category, {
-
-            headers:{
-                'Authorization':`Bearer ${token}`
-            }
-        })
+        this.categoryHttp.update(this._categoryId,this.category)
             .subscribe((category) => {
                 this.onSuccess.emit(category)
                 this.modal.hide();
-                // this.getCategories();
             }, error => this.onError.emit(error));
-
-
     }
 
     showModal(){
