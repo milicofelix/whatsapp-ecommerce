@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Product;
 use App\Models\ProductPhoto;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 
 class ProductPhotosTableSeeder extends Seeder
 {
-    /** @var  \Illuminate\Support\Collection */
+    /** @var  Collection */
     private $allFakerPhotos;
     private $fakerPhotosPath = 'app/faker/product_photos';
 
@@ -18,6 +20,7 @@ class ProductPhotosTableSeeder extends Seeder
      */
     public function run()
     {
+        $this->allFakerPhotos = $this->getFakePhoto();
         /** @var Collection $products */
         $products = Product::all();
         $this->deleteAllPhotosInProductPath();
@@ -27,6 +30,13 @@ class ProductPhotosTableSeeder extends Seeder
             $self->createPhotosModels($product);
         });
     }
+
+    private function getFakePhoto(): Collection
+    {
+        $path = storage_path($this->fakerPhotosPath);
+        return collect(\File::allFiles($path));
+    }
+
     private function deleteAllPhotosInProductPath()
     {
         $path = ProductPhoto::PRODUCTS_PATH;
