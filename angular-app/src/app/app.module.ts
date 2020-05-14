@@ -13,23 +13,34 @@ import { CategoryNewModalComponent } from './components/pages/category/category-
 import { CategoryEditModalComponent } from './components/pages/category/category-edit-modal/category-edit-modal.component';
 import { CategoryDeleteModalComponent } from './components/pages/category/category-delete-modal/category-delete-modal.component';
 import { NgxPaginationModule } from "ngx-pagination";
+import { ProductListComponent } from './components/pages/product/product-list/product-list.component';
+import { ProductNewModalComponent } from './components/pages/product/product-new-modal/product-new-modal.component';
+import { ProductEditModalComponent } from './components/pages/product/product-edit-modal/product-edit-modal.component';
+import { ProductDeleteModalComponent } from './components/pages/product/product-delete-modal/product-delete-modal.component';
+import { NumberFormatBrPipe } from './pipes/number-format-br.pipe';
 
 const routes = [
     {path: 'login', component: LoginComponent},
     {path: 'categories/list', component: CategoryListComponent},
+    {path: 'products/list', component: ProductListComponent},
     {path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
 @NgModule({
   declarations: [
       AppComponent,
-      LoginComponent,
-      CategoryListComponent,
       AlertErrorComponent,
       ModalComponent,
+      LoginComponent,
+      CategoryListComponent,
       CategoryNewModalComponent,
       CategoryEditModalComponent,
-      CategoryDeleteModalComponent
+      CategoryDeleteModalComponent,
+      ProductListComponent,
+      ProductNewModalComponent,
+      ProductEditModalComponent,
+      ProductDeleteModalComponent,
+      NumberFormatBrPipe
   ],
   imports: [
       BrowserModule,
