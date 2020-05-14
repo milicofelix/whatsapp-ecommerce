@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../../../bootstrap/modal/modal.component";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse} from "@angular/common/http";
 import {Category} from "../../../../models";
 import {CategoryHttpService} from "../../../../services/http/category-http.service";
 
@@ -24,7 +24,7 @@ export class CategoryEditModalComponent implements OnInit {
 
   _categoryId:number;
 
-  constructor(public categoryHttp: CategoryHttpService, private http: HttpClient) { }
+  constructor(public categoryHttp: CategoryHttpService) { }
 
   ngOnInit() {
   }
