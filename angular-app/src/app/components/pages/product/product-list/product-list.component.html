@@ -32,7 +32,8 @@
                 </a> |
                 <a href="javascript:void(0)" (click)="productDelete.showDeleteModal(product.id)">
                     <i class="fas fa-trash-alt"></i>
-                </a>
+                </a> |
+                <a [routerLink]="['/products',product.id,'categories','list']" ink>Categorias</a>
             </td>
         </tr>
         </tbody>
