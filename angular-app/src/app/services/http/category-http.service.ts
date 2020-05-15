@@ -3,23 +3,23 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Category} from "../../models";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {HttpResource, SearchParams, SearchParamsBuider} from "./http-resource";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryHttpService {
+export class CategoryHttpService implements HttpResource<Category>{
 
   private baseUrl = 'http://localhost:8000/api/categories';
 
   constructor(private http: HttpClient) { }
 
-  list(page:number):Observable<{ data:Array<Category>, meta:any }>{
-      const params = new HttpParams({
-          fromObject:{
-              page : page+''
-          }
-      });
+  list(searchParams: SearchParams):Observable<{ data:Array<Category>, meta:any }>{
       const token = window.localStorage.getItem('token');
+      const sParams = new SearchParamsBuider(searchParams).makeObject();
+      const params = new HttpParams({
+          fromObject: (<any>sParams)
+      });
       return this.http
           .get<{ data:Array<Category>, meta:any }>
           (this.baseUrl,{
@@ -58,7 +58,7 @@ export class CategoryHttpService {
       );
   }
 
-  update(id:number,data:Category){
+  update(id:number,data:Category):Observable<Category>{
       const token = window.localStorage.getItem('token');
       return this.http
           .put<{ data: Category }>(`${this.baseUrl}/${id}`, data, {
