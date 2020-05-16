@@ -4,6 +4,7 @@ import {Category} from "../../models";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {HttpResource, SearchParams, SearchParamsBuider} from "./http-resource";
+import {AuthService} from "../auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,10 @@ export class CategoryHttpService implements HttpResource<Category>{
 
   private baseUrl = 'http://localhost:8000/api/categories';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService ) { }
 
   list(searchParams: SearchParams):Observable<{ data:Array<Category>, meta:any }>{
-      const token = window.localStorage.getItem('token');
+      const token = this.authService.getToken();
       const sParams = new SearchParamsBuider(searchParams).makeObject();
       const params = new HttpParams({
           fromObject: (<any>sParams)
@@ -32,7 +33,7 @@ export class CategoryHttpService implements HttpResource<Category>{
 
   get(id:number):Observable<Category>{
 
-      const token = window.localStorage.getItem('token');
+      const token = this.authService.getToken();
       return this.http
           .get<{ data: Category }>
           (`${this.baseUrl}/${id}`,{
@@ -47,7 +48,7 @@ export class CategoryHttpService implements HttpResource<Category>{
   }
 
   create(data: Category):Observable<Category>{
-      const token = window.localStorage.getItem('token');
+      const token = this.authService.getToken();
       return this.http
           .post<{ data: Category }>(this.baseUrl, data, {
           headers:{
@@ -59,7 +60,7 @@ export class CategoryHttpService implements HttpResource<Category>{
   }
 
   update(id:number,data:Category):Observable<Category>{
-      const token = window.localStorage.getItem('token');
+      const token = this.authService.getToken();
       return this.http
           .put<{ data: Category }>(`${this.baseUrl}/${id}`, data, {
           headers:{
@@ -71,7 +72,7 @@ export class CategoryHttpService implements HttpResource<Category>{
   }
 
   destroy(id:number):Observable<any>{
-      const token = window.localStorage.getItem('token');
+      const token = this.authService.getToken();
       return this.http
           .delete(`${this.baseUrl}/${id}`,{
               headers:{
