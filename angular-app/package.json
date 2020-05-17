@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~8.2.4",
     "@angular/platform-browser-dynamic": "~8.2.4",
     "@angular/router": "~8.2.4",
+    "@auth0/angular-jwt": "^2.0.0",
     "@fortawesome/fontawesome-free-webfonts": "^1.0.9",
     "@pnotify/bootstrap3": "^5.1.2",
     "bootstrap": "^4.4.1",

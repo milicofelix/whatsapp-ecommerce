@@ -20,7 +20,8 @@ import { ProductDeleteModalComponent } from './components/pages/product/product-
 import { NumberFormatBrPipe } from './pipes/number-format-br.pipe';
 import { ProductCategoryListComponent } from './components/pages/product-category/product-category-list/product-category-list.component';
 import { ProductCategoryNewComponent } from './components/pages/product-category/product-category-new/product-category-new.component';
-
+import {JwtModule, JWT_OPTIONS} from '@auth0/angular-jwt';
+import {AuthService} from "./services/auth.service";
 const routes = [
     {path: 'login', component: LoginComponent},
     {path: 'categories/list', component: CategoryListComponent},
@@ -28,6 +29,17 @@ const routes = [
     {path: 'products/list', component: ProductListComponent},
     {path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
+
+function jwtFactory(authService: AuthService){
+    return {
+        whitelistedDomains: [
+            new RegExp('localhost:8000/*')
+        ],
+        tokenGetter: () => {
+            return authService.getToken()
+        }
+    }
+}
 
 @NgModule({
   declarations: [
@@ -45,14 +57,21 @@ const routes = [
       ProductDeleteModalComponent,
       NumberFormatBrPipe,
       ProductCategoryListComponent,
-      ProductCategoryNewComponent
+      ProductCategoryNewComponent,
   ],
   imports: [
       BrowserModule,
       FormsModule,
       HttpClientModule,
       RouterModule.forRoot(routes),
-      NgxPaginationModule
+      NgxPaginationModule,
+      JwtModule.forRoot({
+          jwtOptionsProvider: {
+              provide: JWT_OPTIONS,
+              useFactory: jwtFactory,
+              deps: [AuthService]
+          }
+      }),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,7 +3,6 @@ import {Observable} from "rxjs";
 import {ProductCategory} from "../../models";
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
-import {AuthService} from "../auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,29 +11,19 @@ export class ProductCategoryHttpService {
 
     private baseUrlApi = `http://localhost:8000/api`;
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient) { }
 
   list(productId:number):Observable<ProductCategory>{
-      const token = this.authService.getToken();
       return this.http
           .get<{ data: ProductCategory }>
-          (`${this.getBaseUrl(productId)}`,{
-              headers:{
-                  'Authorization':`Bearer ${token}`
-              }
-          }).pipe(
+          (`${this.getBaseUrl(productId)}`).pipe(
               map(response => response.data));
 
   }
   create(productId: number, categoriesId:number[]): Observable<ProductCategory>{
-      const token = this.authService.getToken();
       return this.http
           .post<{ data: ProductCategory }>
-          (`${this.getBaseUrl(productId)}`,{categories:categoriesId},{
-              headers:{
-                  'Authorization':`Bearer ${token}`
-              }
-          }).pipe(
+          (`${this.getBaseUrl(productId)}`,{categories:categoriesId}).pipe(
               map(response => response.data));
   }
 
