@@ -4,8 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/pages/login/login.component';
 import { FormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
-import { HttpClientModule } from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { CategoryListComponent } from './components/pages/category/category-list/category-list.component';
 import { AlertErrorComponent } from './components/bootstrap/alert-error/alert-error.component';
 import { ModalComponent } from './components/bootstrap/modal/modal.component';
@@ -22,13 +21,9 @@ import { ProductCategoryListComponent } from './components/pages/product-categor
 import { ProductCategoryNewComponent } from './components/pages/product-category/product-category-new/product-category-new.component';
 import {JwtModule, JWT_OPTIONS} from '@auth0/angular-jwt';
 import {AuthService} from "./services/auth.service";
-const routes = [
-    {path: 'login', component: LoginComponent},
-    {path: 'categories/list', component: CategoryListComponent},
-    {path: 'products/:product/categories/list', component: ProductCategoryListComponent},
-    {path: 'products/list', component: ProductListComponent},
-    {path: '', redirectTo: '/login', pathMatch: 'full' }
-];
+import { NavbarComponent } from './components/bootstrap/navbar/navbar.component';
+import {RefreshTokenService} from "./services/refresh-token.service";
+import {AppRoutingModule} from "./app-routing.module";
 
 function jwtFactory(authService: AuthService){
     return {
@@ -58,12 +53,13 @@ function jwtFactory(authService: AuthService){
       NumberFormatBrPipe,
       ProductCategoryListComponent,
       ProductCategoryNewComponent,
+      NavbarComponent,
   ],
   imports: [
       BrowserModule,
       FormsModule,
       HttpClientModule,
-      RouterModule.forRoot(routes),
+      AppRoutingModule,
       NgxPaginationModule,
       JwtModule.forRoot({
           jwtOptionsProvider: {
@@ -73,7 +69,13 @@ function jwtFactory(authService: AuthService){
           }
       }),
   ],
-  providers: [],
+  providers: [
+      {
+          provide: HTTP_INTERCEPTORS,
+          useClass: RefreshTokenService,
+          multi: true
+      }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
