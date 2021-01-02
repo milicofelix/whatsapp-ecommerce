@@ -10,7 +10,7 @@ import {AuthService} from './services/auth.service';
 export class AppComponent implements OnInit {
   title = 'angular-app';
 
-  constructor(public authService: AuthService){}
+  constructor(public authService: AuthService) {}
 
     ngOnInit(): void {
       pace.start({
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
       });
     }
 
-    canShowNavbar(){
+    canShowNavbar() {
       return this.authService.isAuth();
     }
 }

@@ -6,16 +6,16 @@ import {
     HttpInterceptor,
     HttpRequest,
     HttpResponseBase
-} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {tap} from "rxjs/operators";
-import {AuthService} from "./auth.service";
-import {Router} from "@angular/router";
+} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {AuthService} from './auth.service';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RefreshTokenService implements HttpInterceptor{
+export class RefreshTokenService implements HttpInterceptor {
 
   constructor(private authService: AuthService, private router: Router  ) { }
 
@@ -31,23 +31,23 @@ export class RefreshTokenService implements HttpInterceptor{
                     this.redirectToLogin(eventError);
                     }
                 )
-            )
+            );
     }
 
-    private redirectToLogin(eventError: HttpEvent<any>){
+    private redirectToLogin(eventError: HttpEvent<any>) {
 
-      if(eventError instanceof HttpErrorResponse && eventError.status == 401){
+      if (eventError instanceof HttpErrorResponse && eventError.status == 401) {
           this.authService.setToken(null);
           this.router.navigate(['login']);
       }
 
     }
 
-    private setNewToken(event: HttpEvent<any>){
+    private setNewToken(event: HttpEvent<any>) {
 
-    if(event instanceof HttpResponseBase){
+    if (event instanceof HttpResponseBase) {
         const authorizationHeader = event.headers.get('authorization');
-        if(authorizationHeader){
+        if (authorizationHeader) {
             const token = authorizationHeader.split(' ')[1];
             this.authService.setToken(token);
         }

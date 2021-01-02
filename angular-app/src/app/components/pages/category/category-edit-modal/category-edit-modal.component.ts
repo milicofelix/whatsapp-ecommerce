@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ModalComponent} from "../../../bootstrap/modal/modal.component";
-import {HttpErrorResponse} from "@angular/common/http";
-import {Category} from "../../../../models";
-import {CategoryHttpService} from "../../../../services/http/category-http.service";
+import {ModalComponent} from '../../../bootstrap/modal/modal.component';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Category} from '../../../../models';
+import {CategoryHttpService} from '../../../../services/http/category-http.service';
 
 @Component({
   selector: 'category-edit-modal',
@@ -20,9 +20,9 @@ export class CategoryEditModalComponent implements OnInit {
   category: Category = {
       name: '',
       active: true
-  }
+  };
 
-  _categoryId:number;
+  _categoryId: number;
 
   constructor(public categoryHttp: CategoryHttpService) { }
 
@@ -30,29 +30,29 @@ export class CategoryEditModalComponent implements OnInit {
   }
 
   @Input()
-  set categoryId(value){
+  set categoryId(value) {
       this._categoryId = value;
-      if(this._categoryId){
+      if (this._categoryId) {
           this.categoryHttp
               .get(this._categoryId)
               .subscribe(category => this.category = category,
                   responseError => {
-                  if(responseError.status == 401){
+                  if (responseError.status == 401) {
                       this.modal.hide();
                   }
                   });
     }
   }
 
-    submit(){
-        this.categoryHttp.update(this._categoryId,this.category)
+    submit() {
+        this.categoryHttp.update(this._categoryId, this.category)
             .subscribe((category) => {
-                this.onSuccess.emit(category)
+                this.onSuccess.emit(category);
                 this.modal.hide();
             }, error => this.onError.emit(error));
     }
 
-    showModal(){
+    showModal() {
         this.modal.show();
     }
 

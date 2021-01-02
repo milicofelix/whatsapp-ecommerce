@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Router } from "@angular/router";
-import {AuthService} from "../../../services/auth.service";
+import { Router } from '@angular/router';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +11,11 @@ import {AuthService} from "../../../services/auth.service";
 export class LoginComponent implements OnInit {
 
   credentials = {
-      'email': 'milicofelix@gmail.com',
-      'password': 'morango123'
-  }
+      email: 'admin@user.com',
+      password: 'password'
+  };
 
-  showMessageError:boolean = false;
+  showMessageError = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -23,10 +23,10 @@ export class LoginComponent implements OnInit {
 
   }
 
-  submit(){
+  submit() {
     this.authService.login(this.credentials)
         .subscribe((data) => {
-          this.router.navigate(['categories/list'])
+          this.router.navigate(['categories/list']);
         }, () => this.showMessageError = true);
     return false;
   }

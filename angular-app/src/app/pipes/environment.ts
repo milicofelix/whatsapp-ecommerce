@@ -7,8 +7,8 @@ export const environment = {
     api: {
         protocol: 'http',
         host: 'localhost:8000',
-        get url(){
-            return `${this.protocol}://${this.host}/api`
+        get url() {
+            return `${this.protocol}://${this.host}/api`;
         }
     }
 };

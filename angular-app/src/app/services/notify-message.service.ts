@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import PNotify from "pnotify/dist/es/PNotify";
-import PNotifyButtons from "pnotify/dist/es/PNotifyButtons";
+import PNotify from 'pnotify/dist/es/PNotify';
+import PNotifyButtons from 'pnotify/dist/es/PNotifyButtons';
 
 @Injectable({
   providedIn: 'root'
@@ -9,25 +9,25 @@ export class NotifyMessageService {
 
   constructor() { }
 
-    success(text: string){
-    this.alert(text,Types.success)
+    success(text: string) {
+    this.alert(text, Types.success);
     }
 
-    error(text: string){
-        this.alert(text,Types.error)
+    error(text: string) {
+        this.alert(text, Types.error);
     }
 
-    private alert(text: string, type:Types){
+    private alert(text: string, type: Types) {
 
-    this.pnotity().alert({text,type});
+    this.pnotity().alert({text, type});
 
     }
-    private pnotity(){
-        PNotifyButtons
+    private pnotity() {
+        PNotifyButtons;
         return PNotify;
     }
 }
-enum Types{
+enum Types {
     success = 'success',
     error = 'error'
 }
